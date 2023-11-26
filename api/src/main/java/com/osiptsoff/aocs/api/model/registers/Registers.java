@@ -74,16 +74,16 @@ public class Registers {
      */
     public void setFlag(Flag flag, boolean value) {
         if( value )
-            flags = (byte)( flags | ( 1 << flag.val ) );
+            flags |= (byte)( 1 << flag.val ) ;
         else
-            flags = (byte)( flags & ( 1 << flag.val ) );
+            flags &= (byte)( ~( 1 << flag.val ) );
     }
     /**
      * @param flag desired flag (bit of flag (F) register).
      * @return value of flag (bit of flag (F) register).
      */
     public boolean getFlag(Flag flag) {
-        return (byte)( flags | ( 1 << flag.val ) ) > 0;
+        return (byte)( flags & ( 1 << flag.val ) ) > 0;
     }
 
     /**
