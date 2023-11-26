@@ -1,6 +1,8 @@
 package com.osiptsoff.aocs.api;
 
 import com.osiptsoff.aocs.api.memory.Memory;
+import com.osiptsoff.aocs.api.model.registers.Flag;
+import com.osiptsoff.aocs.api.model.registers.Registers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,5 +58,62 @@ public class ApplicationTests {
         }
 
         memory.deallocate(id);
+    }
+
+    @Test
+    void registersTest() {
+        Registers registers = new Registers();
+
+        {
+            int expected = 765;
+            int regnum = 25;
+            registers.setIntRegister(regnum, expected);
+            int got = registers.getIntRegister(regnum);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
+        {
+            float expected = 765;
+            int regnum = 25;
+            registers.setFloatRegister(regnum, expected);
+            float got = registers.getFloatRegister(regnum);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
+        {
+            int expected = 4545;
+            registers.setProgramCounter(expected);
+            int got = registers.getProgramCounter();
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
+        {
+            boolean expected = true;
+            Flag flag = Flag.Overflow;
+            registers.setFlag(flag, expected);
+            boolean got = registers.getFlag(flag);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+
+            expected = false;
+            registers.setFlag(flag, expected);
+            got = registers.getFlag(flag);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
+        {
+            boolean expected = false;
+            Flag flag = Flag.Carry;
+            registers.setFlag(flag, expected);
+            boolean got = registers.getFlag(flag);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+
+            expected = true;
+            registers.setFlag(flag, expected);
+            got = registers.getFlag(flag);
+
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
     }
 }
