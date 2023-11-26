@@ -44,6 +44,14 @@ public interface Memory {
      * @throws IllegalArgumentException if memory with given {@code identifier} does not exist.
      */
     int getInt(String identifier, int address) throws IndexOutOfBoundsException, IllegalArgumentException;
+    /**
+     * @param identifier identifier of needed memory area,
+     * @param address address of needed float,
+     * @return requested float (4 bytes).
+     * @throws IndexOutOfBoundsException if {@code address} exceeds size of area,
+     * @throws IllegalArgumentException if memory with given {@code identifier} does not exist.
+     */
+    float getFloat(String identifier, int address) throws IndexOutOfBoundsException, IllegalArgumentException;
 
     /**
      * <p>Changes the value of memory byte.</p>
@@ -72,4 +80,13 @@ public interface Memory {
      * @throws IllegalArgumentException if memory with given {@code identifier} does not exist.
      */
     void setInt(String identifier, int address, int value) throws IndexOutOfBoundsException, IllegalArgumentException;
+    /**
+     * <p>Changes the value of memory float.</p>
+     * @param identifier identifier of needed memory area,
+     * @param address address of needed float,
+     * @param value new value of float (4 bytes).
+     * @throws IndexOutOfBoundsException if {@code address} exceeds size of area,
+     * @throws IllegalArgumentException if memory with given {@code identifier} does not exist.
+     */
+    void setFloat(String identifier, int address, float value) throws IndexOutOfBoundsException, IllegalArgumentException;
 }

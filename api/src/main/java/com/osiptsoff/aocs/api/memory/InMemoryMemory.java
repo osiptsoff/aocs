@@ -86,6 +86,14 @@ public final class InMemoryMemory implements Memory {
     }
 
     @Override
+    public float getFloat(String identifier, int address) throws IndexOutOfBoundsException,
+            IllegalArgumentException {
+        checkArgs(identifier, address);
+
+        return addressSpace.get(identifier).getFloat(address);
+    }
+
+    @Override
     public void setByte(String identifier, int address, byte value) throws IndexOutOfBoundsException,
             IllegalArgumentException {
         checkArgs(identifier, address);
@@ -107,5 +115,12 @@ public final class InMemoryMemory implements Memory {
         checkArgs(identifier, address);
 
         addressSpace.get(identifier).putInt(address, value);
+    }
+
+    public void setFloat(String identifier, int address, float value) throws IndexOutOfBoundsException,
+            IllegalArgumentException {
+        checkArgs(identifier, address);
+
+        addressSpace.get(identifier).putFloat(address, value);
     }
 }

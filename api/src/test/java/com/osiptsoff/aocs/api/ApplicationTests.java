@@ -47,6 +47,14 @@ public class ApplicationTests {
 
             Assert.isTrue(got == expected, got + " != " + expected);
         }
+        {
+            float expected = 564.445f;
+            memory.setFloat(id, 0, expected);
+            float got = memory.getFloat(id, 0);
 
+            Assert.isTrue(got == expected, got + " != " + expected);
+        }
+
+        memory.deallocate(id);
     }
 }
