@@ -76,7 +76,7 @@ public class ApplicationTests {
             float expected = 765;
             int regnum = 25;
             registers.setFloatRegister(regnum, expected);
-            float got = registers.getFloatRegister(regnum);
+            float got = registers.getIntRegister(regnum);
 
             Assert.isTrue(got == expected, got + " != " + expected);
         }
