@@ -13,7 +13,7 @@ public class TFIF extends OneRegCommand {
         return serialize(R0, 0);
     }
     /**
-     * <p>Conversion of fixed-point number to integer.</p>
+     * <p>Conversion of integer number to float.</p>
      * <p>Pseudocode: {@code <R0> ← int(<RF0>)}</p>
      * <p>Flags: Z: -; C, S, O: +; I, T, U: -</p>
      * <p>Opcode: 0011101</p>
@@ -21,13 +21,13 @@ public class TFIF extends OneRegCommand {
      */
     @Override
     public void execute(Registers registers) {
-        float floatValue = registers.getFloatRegister(R0);
-        int intValue = (int) floatValue;
-        registers.setIntRegister(R0, intValue);
+        int intValue = registers.getIntRegister(R0);
+        float floatValue = (float) intValue;
+        registers.setFloatRegister(R0, floatValue);
 
-        registers.setFlag(Flag.Carry, registers.getIntRegister(R0) > Integer.MAX_VALUE || registers.getIntRegister(R0) < Integer.MIN_VALUE);
-        registers.setFlag(Flag.Sign, registers.getIntRegister(R0) < 0);
-        registers.setFlag(Flag.Overflow, ((registers.getIntRegister(R0) > 0 && registers.getIntRegister(R0) > 0 && registers.getIntRegister(R0) < 0)
-                || (registers.getIntRegister(R0) < 0 && registers.getIntRegister(R0) < 0 && registers.getIntRegister(R0) > 0)));
+        registers.setFlag(Flag.Carry, registers.getFloatRegister(R0) > Integer.MAX_VALUE || registers.getFloatRegister(R0) < Integer.MIN_VALUE);
+        registers.setFlag(Flag.Sign, registers.getFloatRegister(R0) < 0);
+        registers.setFlag(Flag.Overflow, ((registers.getFloatRegister(R0) > 0 && registers.getFloatRegister(R0) > 0 && registers.getFloatRegister(R0) < 0)
+                || (registers.getFloatRegister(R0) < 0 && registers.getFloatRegister(R0) < 0 && registers.getFloatRegister(R0) > 0)));
     }
 }
