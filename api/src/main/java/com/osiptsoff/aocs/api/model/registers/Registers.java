@@ -100,4 +100,44 @@ public class Registers {
         programCounter = programCounterInterrupt;
         flags = flagsInterrupt;
     }
+
+    /**
+     * <p>This method was written to provide way to serialize this object to JSON.</p>
+     * @return integer registers.
+     */
+    public int[] getIntRegs() {
+        return intRegs;
+    }
+
+    /**
+     * <p>This method was written to provide way to serialize this object to JSON.</p>
+     * @return float registers.
+     */
+    public float[] getFloatRegs() {
+        return floatRegs;
+    }
+
+    /**
+     * <p>This method was written to provide way to serialize this object to JSON.</p>
+     * @return program counter interrupt register.
+     */
+    public int getProgramCounterInterrupt() {
+        return programCounterInterrupt;
+    }
+
+    /**
+     * <p>This method was written to provide way to serialize this object to JSON.</p>
+     * @return flags register.
+     */
+    public byte getFlags() {
+        return flags;
+    }
+
+    /**
+     * <p>This method was written to provide way to serialize this object to JSON.</p>
+     * @return flags interrupt register.
+     */
+    public byte getFlagsInterrupt() {
+        return flagsInterrupt;
+    }
 }
