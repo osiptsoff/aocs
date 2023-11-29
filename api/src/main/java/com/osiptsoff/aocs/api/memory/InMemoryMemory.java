@@ -36,7 +36,7 @@ public final class InMemoryMemory implements Memory {
     }
 
     @Override
-    public String allocate(int size) throws IllegalArgumentException {
+    public String allocate(int size) throws IndexOutOfBoundsException {
         if(size > freeSpace)
             throw new IllegalArgumentException();
 

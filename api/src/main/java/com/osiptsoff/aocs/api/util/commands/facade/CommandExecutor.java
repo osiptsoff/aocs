@@ -1,9 +1,11 @@
 package com.osiptsoff.aocs.api.util.commands.facade;
 
 import com.osiptsoff.aocs.api.util.commands.Command;
+import com.osiptsoff.aocs.api.util.commands.RegMemCommand;
 import com.osiptsoff.aocs.api.util.commands.RegRegCommand;
 import com.osiptsoff.aocs.api.util.commands.concreteCommands.ADD;
 import com.osiptsoff.aocs.api.util.commands.facade.execution.ExecutionChain;
+import org.springframework.jmx.access.InvocationFailureException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class CommandExecutor {
     /**
      * <p>Enables support for given {@link Command} (command example - {@link ADD}) if it's
      * type is defined in {@link ExecutionChain} of this instance.</p>
-     * @param name name of command (e. g. 'add').
+     * @param name name of command (e.g. 'add').
      * @param supplier {@link CommandSupplier} responsible for instantiation of desired command.
      * @return this instance.
      * @throws NullPointerException if one of arguments is {@code null}.
@@ -52,8 +54,6 @@ public class CommandExecutor {
 
         commands.put(name, supplier);
 
-        Command a = new ADD(0, 0, 0);
-
         return this;
     }
 
@@ -63,16 +63,19 @@ public class CommandExecutor {
      * @param executionArgs array of arguments required for command's {@code execute()} method,
      * @param instantiationArgs array of arguments required for command's instantiation.
      * @throws NullPointerException if given {@code name} is {@code null},
-     * @throws IllegalArgumentException if command with given {@code name} is not registered by {@link #registerCommand},
-     * @throws UnsupportedOperationException if command is given {@code name} is registered but it's type
+     * @throws InvocationFailureException if command with given {@code name} is not registered by {@link #registerCommand},
+     * or {@link RegMemCommand} was given a wrong memory id,
+     * @throws UnsupportedOperationException if command is given {@code name} is registered, but it's type,
+     * @throws ClassCastException if one of given {@code instantiationArgs} is of inappropriate type,
+     * @throws IndexOutOfBoundsException if {@link RegMemCommand} was given an inappropriate address.
      * is not supported by underlying {@link ExecutionChain}.
      */
     public void execute(String name, Object[] executionArgs, Object[] instantiationArgs) throws NullPointerException,
-            IllegalArgumentException, UnsupportedOperationException {
+            IllegalArgumentException, UnsupportedOperationException, ClassCastException, IndexOutOfBoundsException {
         if(name == null)
             throw new NullPointerException("Name must not be null.");
         if(commands.get(name) == null)
-            throw new IllegalArgumentException("Command is not registered.");
+            throw new InvocationFailureException("Command is not registered.");
 
         Command command = commands.get(name).instantiate(instantiationArgs);
 

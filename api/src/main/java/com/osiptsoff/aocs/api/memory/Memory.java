@@ -12,9 +12,9 @@ public interface Memory {
      * <p>Allocates memory of given size.</p>
      * @param size size of memory in kilobytes.
      * @return  {@code String} identifier of area if allocation was successful.
-     * @throws OutOfMemoryError if system cannot allocate requested amount of memory.
+     * @throws IndexOutOfBoundsException if no free space of given {@code size} is available.
      */
-    String allocate(int size) throws IllegalArgumentException;
+    String allocate(int size) throws IndexOutOfBoundsException;
     /**
      * <p>Frees memory area.</p>
      * @param identifier identifier of memory area.
