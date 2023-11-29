@@ -14,8 +14,8 @@ const routes: Array<RouteRecordRaw>  = [
         component: MemoryRequestPrompt
     },
     {
-        name: 'NotFound',
         path: '/:path(.*)*',
+        name: 'NotFound',
         component: ErrorComponent,
     },
 ];
