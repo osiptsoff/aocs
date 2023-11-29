@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 import MemoryRequestPrompt from "../components/MemoryRequestPrompt.vue";
 import ErrorComponent from "../components/ErrorComponent.vue";
+import ProcessorPage from "../components/ProcessorPage.vue";
 
 const routes: Array<RouteRecordRaw>  = [
     {
@@ -14,8 +15,13 @@ const routes: Array<RouteRecordRaw>  = [
         component: MemoryRequestPrompt
     },
     {
+        path: '/processor',
+        name: 'Processor',
+        component: ProcessorPage
+    },
+    {
         path: '/:path(.*)*',
-        name: 'NotFound',
+        name: 'Error',
         component: ErrorComponent,
     },
 ];

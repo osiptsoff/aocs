@@ -14,9 +14,14 @@
   const size: ref<number> = ref(1);
   const valid: ref<boolean> = ref(false);
 
-  function onSubmit() {
-    console.log('sfdf')
-    router.push( { name: 'NotFound'} );
+  async function onSubmit() {
+    let res = await memoryStore.allocateMemory(size.value);
+
+    if (res === true) {
+      await router.push({name: 'Processor'});
+    } else {
+      await router.push({name: 'Error'});
+    }
   }
 
 </script>
