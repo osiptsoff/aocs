@@ -1,14 +1,27 @@
 <script setup lang="ts">
   import {useMemoryStore} from "../../store/memoryStore.ts";
+  import {ref} from "vue";
+  import ErrorComponent from "../ErrorComponent.vue";
 
   const memoryStore = useMemoryStore();
 
   const memory = memoryStore.memory;
   const sizeKb = memoryStore._size;
 
+  const successfulQuery: ref<boolean> = ref(true);
+  const errorMessage: ref<string> = ref();
   function onMemSelect(kbnum: number, toggle: () => void ) {
     toggle();
-    memoryStore.queryMemory(kbnum);
+
+    memoryStore.queryMemory(kbnum)
+        .then(res => {
+          if(typeof(res) === 'string') {
+            errorMessage.value = res;
+            successfulQuery.value = false;
+          }
+          else
+            successfulQuery.value = true;
+        });
   }
 
 </script>
@@ -33,7 +46,8 @@
             </v-slide-group-item>
           </v-slide-group>
 
-          <v-table height="30vmax">
+        <v-fade-transition>
+          <v-table height="40vmax" v-if="successfulQuery" fixed-header>
             <thead>
             <tr>
               <th>Адрес</th>
@@ -48,6 +62,13 @@
             </tr>
             </tbody>
           </v-table>
+
+          <ErrorComponent :error-message="errorMessage.value" v-else>
+
+          </ErrorComponent>
+        </v-fade-transition>
+
+
     </v-card-text>
   </v-card>
 </template>
