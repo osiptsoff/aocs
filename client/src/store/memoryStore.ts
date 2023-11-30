@@ -11,7 +11,7 @@ const useMemoryStore = defineStore('memory', () => {
 
     const memory = computed( () => _memory );
 
-     function allocateMemory(size: number) :  Promise<boolean | string> {
+     function allocateMemory(size: number) :  Promise<boolean> {
         return axios.post( config.memAllocateUrl, {}, {
             headers: {
                 Accept: 'application/json',
@@ -23,15 +23,7 @@ const useMemoryStore = defineStore('memory', () => {
                 _size.value = size;
                 _currentKb.value = 0;
                 return true;
-            })
-            .catch( error => {
-                const response = error.response;
-                if(response == undefined) {
-                    return 'Server is unavailable';
-                } else {
-                    return response.data.message;
-                }
-            } )
+            });
     }
 
      function deallocateMemory() : Promise<void> {
@@ -58,15 +50,7 @@ const useMemoryStore = defineStore('memory', () => {
                 _memory.value = data;
                 _currentKb.value = kbnum;
                 return true;
-            } )
-            .catch( error => {
-                const response = error.response;
-                if(response == undefined) {
-                    return 'Сервер недоступен';
-                } else {
-                    return'Не удалось получить память.';
-                }
-            })
+            } );
     }
 
     return { _memory, _currentKb, _key, _size, memory, allocateMemory, deallocateMemory, queryMemory };

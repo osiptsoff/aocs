@@ -15,9 +15,18 @@
   const valid: ref<boolean> = ref(false);
 
   async function onSubmit() {
-    let res = await memoryStore.allocateMemory(size.value);
+    let err: string | null = null;
+    let res = await memoryStore.allocateMemory(size.value)
+        .catch( error => {
+          const response = error.response;
+          if(response == undefined) {
+            err = 'Server is unavailable';
+          } else {
+            err = response.data.message;
+        }
+    } );
 
-    if (res === true) {
+    if (err === null) {
       await router.push({name: 'Processor'});
     } else {
       await router.push({name: 'Error'});

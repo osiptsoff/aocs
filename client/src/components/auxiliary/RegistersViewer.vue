@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <v-card class="fill-height">
+  <v-card class="flex-fill">
     <v-card-title class="text-center">
       Регистры
     </v-card-title>

@@ -15,20 +15,26 @@
 
     memoryStore.queryMemory(kbnum)
         .then(res => {
-          if(typeof(res) === 'string') {
-            errorMessage.value = res;
-            successfulQuery.value = false;
-          }
-          else
             successfulQuery.value = true;
-        });
+        })
+        .catch( error => {
+          const response = error.response;
+
+          successfulQuery.value = false;
+
+          if(response == undefined) {
+            errorMessage.value =  'Сервер недоступен';
+          } else {
+            errorMessage.value = 'Не удалось получить память.';
+        }
+    })
   }
 
 </script>
 
 <template>
   <v-card>
-    <v-card-title class="text-center">
+    <v-card-title class="text-center fill-height">
       Память
     </v-card-title>
     <v-card-text>
@@ -63,7 +69,7 @@
             </tbody>
           </v-table>
 
-          <ErrorComponent :error-message="errorMessage.value" v-else>
+          <ErrorComponent :error-message="errorMessage" v-else>
 
           </ErrorComponent>
         </v-fade-transition>

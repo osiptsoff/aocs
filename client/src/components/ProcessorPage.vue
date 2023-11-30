@@ -15,7 +15,10 @@ import MemoryViewer from "./auxiliary/MemoryViewer.vue";
           </CodeControls>
         </v-row>
 
-        <v-row>
+        <v-spacer>
+        </v-spacer>
+
+        <v-row class="mt-10">
           <RegistersViewer>
 
           </RegistersViewer>

@@ -5,6 +5,9 @@ const config : { [prop: string]: string } = {
     },
     get memGetUrl() {
         return this._apiUrl + 'memory'
+    },
+    get commandExecuteUrl() {
+        return this._apiUrl + 'command';
     }
 }
 

@@ -11,7 +11,7 @@
       <v-row no-gutters>
         <v-col cols="6">
           <v-app-bar-title class="ml-10 text-amber text-center">
-            <h1>Процессор</h1>
+            <h2>Процессор</h2>
           </v-app-bar-title>
         </v-col>
 
@@ -36,7 +36,7 @@
       <router-view v-slot="{ Component }">
         <transition name="router"
                     mode="out-in">
-          <component :is="Component" errorMessage="Страница не найдена"></component>
+          <component :is="Component" errorMessage="Ресурс недоступен"></component>
         </transition>
       </router-view>
     </v-main>
