@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import {useCommandStore} from "../../store/commandStore.ts";
-  import {computed, ref} from "vue";
+  import {computed, ref, watch} from "vue";
   import ErrorComponent from "../ErrorComponent.vue";
+  import {VFileInput} from "vuetify/components";
 
   const commandStore = useCommandStore();
 
@@ -11,6 +12,9 @@
   const errorMsg = ref<string>('');
   const successfulQuery = ref<boolean>(true);
   const input = ref<string>('');
+
+  const files = ref<[File]>([]);
+  const fileInputRef = ref<InstanceType<VFileInput>>();
 
   function onStart() {
     started.value = true;
@@ -47,9 +51,17 @@
     commandStore.$reset();
   }
 
-  function onLoad() {
-
+  async function onLoad() {
+    fileInputRef.value.click()
   }
+
+  watch(files, () => {
+    files.value[0]
+        .text()
+        .then( res => {
+          input.value = res;
+        })
+  })
 </script>
 
 <template>
@@ -117,6 +129,11 @@
           <v-btn :block="true"
                  :disabled="started"
                  @click="onLoad">
+            <v-file-input v-show="false"
+                          ref="fileInputRef"
+                          accept="text/*"
+                          v-model="files">
+            </v-file-input>
             Загрузить с диска
           </v-btn>
         </v-col>
