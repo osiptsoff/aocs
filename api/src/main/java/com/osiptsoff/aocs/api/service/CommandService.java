@@ -41,6 +41,7 @@ public class CommandService {
                     + " from owner of memory with id "
                     + memoryBlockId);
             commandExecutor.execute(commandName, new Object[]{ registers, memory, memoryBlockId }, instantiationArgs);
+            registers.setProgramCounter(registers.getProgramCounter() + 1);
             logger.info("Successfully executed '" + commandName + "' command");
         } catch(NullPointerException npe) {
             logger.info("Execution failed: null parameter passed");
