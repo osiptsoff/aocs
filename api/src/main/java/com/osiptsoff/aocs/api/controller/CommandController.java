@@ -1,6 +1,7 @@
 package com.osiptsoff.aocs.api.controller;
 
 import com.osiptsoff.aocs.api.model.communication.request.CommandExecutionRequest;
+import com.osiptsoff.aocs.api.model.communication.request.JsonCommand;
 import com.osiptsoff.aocs.api.model.communication.response.TextMessage;
 import com.osiptsoff.aocs.api.model.registers.Registers;
 import com.osiptsoff.aocs.api.service.CommandService;
@@ -37,6 +38,13 @@ public class CommandController {
         commandService.performCommandExecution(name, id, registers, args);
 
         return registers;
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/store")
+    public void storeProgram(@RequestBody(required = true) JsonCommand[] program,
+                                    @RequestHeader(required = true) String id) {
+        commandService.loadProgram(id, program);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

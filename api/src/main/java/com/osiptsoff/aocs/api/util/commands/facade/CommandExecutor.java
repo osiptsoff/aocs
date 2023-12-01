@@ -65,13 +65,14 @@ public class CommandExecutor {
      * @throws NullPointerException if given {@code name} is {@code null},
      * @throws InvocationFailureException if command with given {@code name} is not registered by {@link #registerCommand},
      * or {@link RegMemCommand} was given a wrong memory id,
-     * @throws UnsupportedOperationException if command is given {@code name} is registered, but it's type,
+     * @throws UnsupportedOperationException if command is given {@code name} is registered, but it's type is not,
      * @throws ClassCastException if one of given {@code instantiationArgs} is of inappropriate type,
      * @throws IndexOutOfBoundsException if {@link RegMemCommand} was given an inappropriate address.
      * is not supported by underlying {@link ExecutionChain}.
      */
     public void execute(String name, Object[] executionArgs, Object[] instantiationArgs) throws NullPointerException,
-            IllegalArgumentException, UnsupportedOperationException, ClassCastException, IndexOutOfBoundsException {
+            InvocationFailureException, IllegalArgumentException, UnsupportedOperationException,
+            ClassCastException, IndexOutOfBoundsException {
         if(name == null)
             throw new NullPointerException("Name must not be null.");
         if(commands.get(name) == null)
@@ -80,6 +81,26 @@ public class CommandExecutor {
         Command command = commands.get(name).instantiate(instantiationArgs);
 
         executionChain.execute(command, executionArgs);
+    }
+
+    /**
+     *
+     * @param name name of command previously registered by call of {@link #registerCommand},
+     * @param instantiationArgs array of arguments required for command's instantiation.
+     * @return instance of specified {@link Command}.
+     * @throws NullPointerException if given {@code name} is {@code null},
+     * @throws InvocationFailureException if command with given {@code name} is not registered by {@link #registerCommand},
+     * @throws UnsupportedOperationException if command is given {@code name} is registered, but it's type is not,
+     * @throws ClassCastException if one of given {@code instantiationArgs} is of inappropriate type.
+     */
+    public Command instantiate(String name, Object[] instantiationArgs) throws NullPointerException,
+            InvocationFailureException, UnsupportedOperationException, ClassCastException {
+        if(name == null)
+            throw new NullPointerException("Name must not be null.");
+        if(commands.get(name) == null)
+            throw new InvocationFailureException("Command is not registered.");
+
+        return commands.get(name).instantiate(instantiationArgs);
     }
 
 }

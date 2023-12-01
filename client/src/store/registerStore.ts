@@ -60,4 +60,4 @@ const useRegisterStore = defineStore('registers', () => {
     return {registers, flags, setRegs, $reset}
 });
 
-export { useRegisterStore };
+export { useRegisterStore, Registers };

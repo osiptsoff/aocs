@@ -1,14 +1,17 @@
 const config : { [prop: string]: string } = {
     _apiUrl: 'http://localhost:8080/api/',
-    get memAllocateUrl() {
+    get memAllocateUrl() : string {
         return this._apiUrl + 'memory/allocation'
     },
-    get memGetUrl() {
+    get memGetUrl() : string {
         return this._apiUrl + 'memory'
     },
-    get commandExecuteUrl() {
+    get commandExecuteUrl() : string {
         return this._apiUrl + 'command';
-    }
+    },
+    get programStoreUrl() : string {
+        return this._apiUrl + 'command/store';
+    },
 }
 
 export {config};

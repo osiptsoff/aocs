@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, ref, UnwrapRef} from "vue";
-import {useRegisterStore} from "./registerStore.ts";
+import {useRegisterStore, Registers} from "./registerStore.ts";
 import {useMemoryStore} from "./memoryStore.ts";
 import axios from "axios";
 import {config} from "../config.ts";
@@ -16,7 +16,7 @@ const useCommandStore = defineStore('command', () => {
 
     const commands = ref<Array<Command>>([]);
 
-    const currentCommandNumber = computed( () => registerStore.registers.programCounter);
+    const currentCommandNumber = computed( () => registerStore.registers.programCounter / 4);
     const currentCommand= computed<Command>( () => {
         let res : UnwrapRef<Command> | undefined = commands.value[currentCommandNumber.value]
 
@@ -40,15 +40,24 @@ const useCommandStore = defineStore('command', () => {
                     commandArgs: row.slice(1).map(arg => Number.parseInt(arg, 16))
                 }
             } );
+
+        axios.post<void>(config.programStoreUrl, commands.value, {
+            headers: {
+                Accept: 'application/json',
+                id: memoryStore._key,
+            }
+        })
+            .then( () => {} )
+            .catch( () => {} );
     }
 
     async function executeNext() : Promise<boolean> {
         if(currentCommandNumber.value >= commands.value.length )
             return false;
 
-        let command = commands.value[currentCommandNumber.value];
+        let command = currentCommand.value;
 
-        return axios.post(config.commandExecuteUrl, {
+        return axios.post<Registers>(config.commandExecuteUrl, {
             commandName: command.commandName,
             commandArgs: command.commandArgs,
             registers: registerStore.registers,
