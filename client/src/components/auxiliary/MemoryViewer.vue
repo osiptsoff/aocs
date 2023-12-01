@@ -8,13 +8,13 @@
   const memory = memoryStore.memory;
   const sizeKb = memoryStore._size;
 
-  const successfulQuery: ref<boolean> = ref(true);
-  const errorMessage: ref<string> = ref();
-  function onMemSelect(kbnum: number, toggle: () => void ) {
+  const successfulQuery = ref<boolean>(true);
+  const errorMessage = ref<string>('');
+  function onMemSelect(kbnum: number, toggle: () => void ) : void {
     toggle();
 
     memoryStore.queryMemory(kbnum)
-        .then(res => {
+        .then( () => {
             successfulQuery.value = true;
         })
         .catch( error => {

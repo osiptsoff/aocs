@@ -16,12 +16,12 @@
   const files = ref<[File]>([]);
   const fileInputRef = ref<InstanceType<VFileInput>>();
 
-  function onStart() {
+  function onStart() : void {
     started.value = true;
     commandStore.parseAndSet(input.value);
   }
 
-  function onNextStep() {
+  function onNextStep() : void {
     commandStore
         .executeNext()
         .then( result => {
@@ -44,18 +44,22 @@
         });
   }
 
-  function onStop() {
-    console.log('aaa')
+  function onStop() : void {
     started.value = false;
     successfulQuery.value = true;
     commandStore.$reset();
   }
 
-  async function onLoad() {
+   function onLoad() : void {
     fileInputRef.value.click()
   }
 
   watch(files, () => {
+    if(files.value[0].size > 1048576) {
+      input.value = 'Файл слишком большой (допустим размер до 1 Мб)';
+      return;
+    }
+
     files.value[0]
         .text()
         .then( res => {
@@ -88,7 +92,7 @@
             <tbody>
             <tr>
               <td>{{ currentCommand.commandName }}</td>
-              <td>{{ currentCommand.commandArgs.join(' ') }}</td>
+              <td>{{ currentCommand.commandArgs.map( num => num.toString(16) ).join(' ') }}</td>
             </tr>
             </tbody>
           </v-table>
@@ -111,7 +115,7 @@
 
         <v-col>
           <v-btn :block="true"
-                 :disabled="!started"
+                 :disabled="!started || !successfulQuery"
                  @click="onNextStep">
             Следующий шаг
           </v-btn>

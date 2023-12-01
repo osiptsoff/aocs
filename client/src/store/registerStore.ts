@@ -26,7 +26,7 @@ const useRegisterStore = defineStore('registers', () => {
     const flags = ref<{}>({
         U: registers.value.flags & ( 1 << 0 ),
         T: registers.value.flags & ( 1 << 1 ),
-        I: registers.value.flags& ( 1 << 2 ),
+        I: registers.value.flags & ( 1 << 2 ),
         O: registers.value.flags & ( 1 << 3 ),
         S: registers.value.flags & ( 1 << 4 ),
         C: registers.value.flags & ( 1 << 5 ),
@@ -34,7 +34,7 @@ const useRegisterStore = defineStore('registers', () => {
         '-': registers.value.flags & ( 1 << 7 ),
     });
 
-    function setRegs(regs: Registers) {
+    function setRegs(regs: Registers) : void  {
         registers.value.intRegs = regs.intRegs;
         registers.value.floatRegs = regs.floatRegs;
         registers.value.programCounter = regs.programCounter;
@@ -53,7 +53,11 @@ const useRegisterStore = defineStore('registers', () => {
         registers.value.flagsInterrupt = regs.flagsInterrupt;
     }
 
-    return {registers, flags, setRegs}
+    function $reset() : void {
+        registers.value = new Registers();
+    }
+
+    return {registers, flags, setRegs, $reset}
 });
 
 export { useRegisterStore };

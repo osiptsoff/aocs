@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
+import {computed, ref, UnwrapRef} from "vue";
 import {useRegisterStore} from "./registerStore.ts";
 import {useMemoryStore} from "./memoryStore.ts";
 import axios from "axios";
@@ -18,7 +18,7 @@ const useCommandStore = defineStore('command', () => {
 
     const currentCommandNumber = computed( () => registerStore.registers.programCounter);
     const currentCommand= computed<Command>( () => {
-        let res = commands.value[currentCommandNumber.value]
+        let res : UnwrapRef<Command> | undefined = commands.value[currentCommandNumber.value]
 
         if(res === undefined)
             return { commandName: 'Нет команды', commandArgs: []};
@@ -29,8 +29,10 @@ const useCommandStore = defineStore('command', () => {
     function parseAndSet(commandsRaw: string) : void {
         commands.value = commandsRaw
             .split('\n')
-            .filter( row => !/\s\s+/g.test(row))
-            .map( row => row.replace(/\s\s+/g, ' ') )
+            .filter( row => !/^\s*$/.test(row))
+            .filter( row => !row.startsWith('//'))
+            .map( row => row.trim())
+            .map( row => row.replace(/\s+/g, ' ') )
             .map( row => row.split(' ') )
             .map( row => {
                 return {

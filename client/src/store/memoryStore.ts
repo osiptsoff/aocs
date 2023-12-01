@@ -12,7 +12,7 @@ const useMemoryStore = defineStore('memory', () => {
     const memory = computed( () => _memory );
 
      function allocateMemory(size: number) :  Promise<boolean> {
-        return axios.post( config.memAllocateUrl, {}, {
+        return axios.post<{id : string}>( config.memAllocateUrl, {}, {
             headers: {
                 Accept: 'application/json',
                 size: size,
@@ -38,7 +38,7 @@ const useMemoryStore = defineStore('memory', () => {
             } );
     }
 
-     function queryMemory(kbnum: number) : Promise<boolean | string> {
+     function queryMemory(kbnum: number) : Promise<boolean> {
        return axios.get(config.memGetUrl, {
             headers: {
                 Accept: 'application/json',
