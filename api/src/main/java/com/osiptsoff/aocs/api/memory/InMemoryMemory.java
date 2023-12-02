@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,7 +19,6 @@ import java.util.UUID;
 public final class InMemoryMemory implements Memory {
     private final Map<String, ByteBuffer> addressSpace;
 
-    @Value("${app.memoryKb}")
     private int freeSpace;
 
     private void checkArgs(String identifier, int address) throws IllegalArgumentException,
@@ -31,7 +29,9 @@ public final class InMemoryMemory implements Memory {
             throw new IndexOutOfBoundsException();
     }
 
-    public InMemoryMemory() {
+    public InMemoryMemory(@Value("${app.memoryKb}") Integer freeSpace) {
+        this.freeSpace = freeSpace;
+
         addressSpace = new HashMap<>();
     }
 

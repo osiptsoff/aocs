@@ -1,6 +1,7 @@
 package com.osiptsoff.aocs.api.service;
 
 import com.osiptsoff.aocs.api.memory.Memory;
+import com.osiptsoff.aocs.api.util.MemoryCleaner;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,20 +10,24 @@ import org.springframework.stereotype.Service;
 public class MemoryService {
     private final Memory memory;
     private final Logger logger;
+    private final MemoryCleaner memoryCleaner;
 
     @Autowired
-    public MemoryService(Memory memory, Logger logger) {
+    public MemoryService(Memory memory, Logger logger, MemoryCleaner memoryCleaner) {
         this.memory = memory;
         this.logger = logger;
+        this.memoryCleaner = memoryCleaner;
     }
 
     public String allocateMemory(int size) {
         try {
             logger.info("Got request for memory with size of " + size + " Kb");
-            String identifier = memory.allocate(size);
-            logger.info("Allocated memory with size of " + size + " Kb, id " + identifier);
+            String id = memory.allocate(size);
+            logger.info("Allocated memory with size of " + size + " Kb, id " + id);
 
-            return identifier;
+            memoryCleaner.mark(id);
+
+            return id;
         } catch (IndexOutOfBoundsException iae) {
             logger.info("Failed to allocate" + size + " Kb of memory, no free space");
             throw iae;
@@ -52,6 +57,8 @@ public class MemoryService {
 
             for(int i = 0; i < 256; i++)
                 chunk[i] = memory.getInt(id, addr + i * 4);
+
+            memoryCleaner.mark(id);
 
             return chunk;
         } catch (Exception e) {

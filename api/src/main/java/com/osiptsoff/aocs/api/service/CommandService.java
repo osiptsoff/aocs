@@ -3,6 +3,7 @@ package com.osiptsoff.aocs.api.service;
 import com.osiptsoff.aocs.api.memory.Memory;
 import com.osiptsoff.aocs.api.model.communication.request.JsonCommand;
 import com.osiptsoff.aocs.api.model.registers.Registers;
+import com.osiptsoff.aocs.api.util.MemoryCleaner;
 import com.osiptsoff.aocs.api.util.commands.Command;
 import com.osiptsoff.aocs.api.util.commands.facade.CommandExecutor;
 import org.apache.logging.log4j.Logger;
@@ -18,12 +19,14 @@ public class CommandService {
     private final Logger logger;
     private final CommandExecutor commandExecutor;
     private final Memory memory;
+    private final MemoryCleaner memoryCleaner;
 
     @Autowired
-    public CommandService(Logger logger, CommandExecutor commandExecutor, Memory memory) {
+    public CommandService(Logger logger, CommandExecutor commandExecutor, Memory memory, MemoryCleaner memoryCleaner) {
         this.logger = logger;
         this.commandExecutor = commandExecutor;
         this.memory = memory;
+        this.memoryCleaner = memoryCleaner;
     }
 
     public void performCommandExecution(String commandName,
@@ -45,6 +48,7 @@ public class CommandService {
             commandExecutor.execute(commandName, new Object[]{ registers, memory, memoryBlockId }, instantiationArgs);
             registers.setProgramCounter(registers.getProgramCounter() + 4);
             logger.info("Successfully executed '" + commandName + "' command");
+            memoryCleaner.mark(memoryBlockId);
         } catch(NullPointerException npe) {
             logger.info("Execution failed: null parameter passed");
             throw npe;
@@ -81,6 +85,7 @@ public class CommandService {
                 memory.setInt(memoryBlockId, i * 4, instance.serialize());
             }
             logger.info("Successfully stored program");
+            memoryCleaner.mark(memoryBlockId);
         } catch(NullPointerException npe) {
             logger.info("Storing failed: null parameter passed");
             throw npe;
