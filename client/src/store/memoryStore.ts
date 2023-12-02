@@ -4,12 +4,12 @@ import axios from "axios";
 import {config} from "../config.ts";
 
 const useMemoryStore = defineStore('memory', () => {
-    const _memory: ref< { [address : string] : string } > = ref();
+    const _memory: ref< { [address : number] : number } > = ref();
     const _currentKb: ref<number> = ref();
     const _key: ref<string> = ref();
     const _size: ref<number> = ref();
 
-    const memory = computed( () => _memory );
+    const memory = computed(() => _memory );
 
      function allocateMemory(size: number) :  Promise<boolean> {
         return axios.post<{id : string}>( config.memAllocateUrl, {}, {
@@ -27,7 +27,7 @@ const useMemoryStore = defineStore('memory', () => {
     }
 
      function deallocateMemory() : Promise<void> {
-        return axios.delete( config.memAllocateUrl, {
+        return axios.delete<void>( config.memAllocateUrl, {
             headers: {
                 Accept: 'application/json',
                 id: _key
@@ -39,7 +39,7 @@ const useMemoryStore = defineStore('memory', () => {
     }
 
      function queryMemory(kbnum: number) : Promise<boolean> {
-       return axios.get(config.memGetUrl, {
+       return axios.get<{ [address : number] : number }>(config.memGetUrl, {
             headers: {
                 Accept: 'application/json',
                 addr: kbnum,

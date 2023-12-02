@@ -33,7 +33,7 @@ public class MemoryController {
         MemoryResponse response = new MemoryResponse();
 
         for(int i = 0; i < mem.length; i++)
-            response.put(Integer.toHexString(addr + i * 4), Integer.toHexString(mem[i]));
+            response.put(addr + i * 4, mem[i]);
 
         return response;
     }

@@ -2,9 +2,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import * as styles from "vuetify/_styles.scss";
-
-import colors from 'vuetify/lib/util/colors'
-
+import * as icons from "vuetify/lib/iconsets/mdi-svg"
 const vuetify = createVuetify( {
     theme: {
         defaultTheme: "dark",
@@ -12,7 +10,8 @@ const vuetify = createVuetify( {
 
     components,
     directives,
-    styles
+    styles,
+    icons
 });
 
 export { vuetify }

@@ -23,6 +23,7 @@ public class ExecutionChain {
             last = link;
         } else {
             last.setNext(link);
+            last = link;
         }
 
         return this;

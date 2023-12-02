@@ -54,7 +54,7 @@ const useRegisterStore = defineStore('registers', () => {
     }
 
     function $reset() : void {
-        registers.value = new Registers();
+        setRegs(new Registers());
     }
 
     return {registers, flags, setRegs, $reset}

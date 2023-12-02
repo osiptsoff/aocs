@@ -21,7 +21,7 @@ public class ADDC extends RegConstCommand {
      */
     @Override
     public void execute(Registers registers) {
-        long result = (long) registers.getIntRegister(R1) + (long) registers.getIntRegister(DISP);
+        long result = (long) registers.getIntRegister(R1) + DISP;
         registers.setIntRegister(R0, (int) result);
 
         registers.setFlag(Flag.ZeroResult, registers.getIntRegister(R0) == 0);

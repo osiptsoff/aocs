@@ -75,7 +75,7 @@ const useCommandStore = defineStore('command', () => {
 
     function $reset() {
         commands.value = [];
-        registerStore.registers.programCounter = 0;
+        registerStore.$reset();
     }
 
     return {commands, currentCommandNumber, currentCommand, parseAndSet, executeNext, $reset}

@@ -63,8 +63,8 @@
 
             <tbody>
             <tr v-for="(addr, value) in memory">
-              <td>{{ value }}</td>
-              <td>{{ addr }}</td>
+              <td>{{ Number(value).toString(16) }}</td>
+              <td>{{ Number(addr).toString(16) }}</td>
             </tr>
             </tbody>
           </v-table>
