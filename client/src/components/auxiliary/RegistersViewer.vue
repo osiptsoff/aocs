@@ -27,9 +27,9 @@
             </thead>
 
             <tbody>
-            <tr v-for="(idx, val) in registers.intRegs">
-              <td>{{ val.toString(16) }}</td>
+            <tr v-for="(val, idx) in registers.intRegs">
               <td>{{ idx.toString(16) }}</td>
+              <td>{{ (val >>> 0).toString(16) }}</td>
             </tr>
             </tbody>
           </v-table>
@@ -49,7 +49,7 @@
 
             <tbody>
             <tr v-for="(idx, val) in registers.floatRegs">
-              <td>{{ val.toString(16) }}</td>
+              <td>{{ (val >>> 0).toString(16) }}</td>
               <td>{{ idx.toString(16) }}</td>
             </tr>
             </tbody>
